@@ -1,16 +1,27 @@
+packer {
+  required_plugins {
+    virtualbox = {
+      version = ">= 1.0.0"
+      source  = "github.com/hashicorp/virtualbox"
+    }
+  }
+}
+
 variable "vm_name" {
   default = "ubuntu-containerd-fastapi"
 }
 
 source "virtualbox-iso" "ubuntu" {
-  iso_url          = "https://releases.ubuntu.com/22.04/ubuntu-22.04-live-server-amd64.iso"
-  iso_checksum     = "sha256:6d9c8f7282cf9e97c57b1b6d2cbb6fa0b2fa7596324e423a98cb16ef58f10d43"
+  iso_url          = "https://releases.ubuntu.com/22.04/ubuntu-22.04.5-live-server-amd64.iso"
+  iso_checksum     = "sha256:9bc6028870aef3f74f4e16b900008179e78b130e6b0b9a140635434a46aa98b0"
   communicator     = "ssh"
   ssh_username     = "ubuntu"
   ssh_password     = "packer"
   ssh_timeout      = "20m"
   shutdown_command = "echo 'packer' | sudo -S shutdown -P now"
+  boot_wait        = "60s"
 
+  headless        = true
   vm_name         = var.vm_name
   cpus            = 2
   memory          = 4096
